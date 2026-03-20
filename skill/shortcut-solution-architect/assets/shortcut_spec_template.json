@@ -1,0 +1,37 @@
+{
+  "name": "example-shortcut",
+  "platform": "macOS",
+  "task": "describe the shortcut's user-visible job here",
+  "target_app": "Target App",
+  "desired_deliverable": "plan|file|link|all",
+  "classification": "Native Shortcut-capable|Share-sheet bridge|CLI/URL bridge|UI automation only|Unsupported",
+  "build_path": {
+    "primary_route": "",
+    "fallback_route": ""
+  },
+  "inputs": {
+    "share_sheet": true,
+    "accepted_types": [
+      "files",
+      "media"
+    ]
+  },
+  "steps": [
+    {
+      "type": "action-or-bridge",
+      "description": "Describe the action or bridge here"
+    }
+  ],
+  "artifacts": {
+    "spec": true,
+    "shortcut_file": false,
+    "download_link": false,
+    "icloud_share_link": false
+  },
+  "quality_gate": {
+    "preflight": [],
+    "run_1": [],
+    "run_2_fallback": [],
+    "run_3_fallback": []
+  }
+}
