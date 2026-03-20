@@ -192,6 +192,8 @@ Read only what you need:
   Use for pattern selection and common integration shapes.
 - [references/cherri-advanced-path.md](references/cherri-advanced-path.md)
   Use when evaluating code-first shortcut generation, file artifacts, or repeatable generator pipelines.
+- [references/cherri-pitfalls.md](references/cherri-pitfalls.md)
+  Use during real `.shortcut` generation to avoid common Cherri parser, typing, interpolation, and artifact-path pitfalls.
 - [references/local-inspection-playbook.md](references/local-inspection-playbook.md)
   Use for local, non-destructive app inspection before falling back to research.
 - [references/system-app-textbook.md](references/system-app-textbook.md)
