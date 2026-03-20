@@ -1,5 +1,7 @@
 # [Shortcut Title]
 
+Write the report and implementation guidance in the user's language by default.
+
 ## Capability Report
 - App:
 - Task:
@@ -19,6 +21,7 @@
 - `.shortcut` file:
 - Download link:
 - iCloud share link:
+- Manual build fallback:
 - Blockers:
 
 ## Quality Gate

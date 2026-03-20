@@ -74,3 +74,19 @@ Why:
 Guardrails:
 - still provide a native fallback
 - do not claim iCloud sharing unless it is actually available
+
+## Example 6: Delivery priority
+
+Request:
+- runtime path is already known
+- user wants a working shortcut quickly
+- manual assembly would require many repetitive UI actions
+
+Recommended result:
+- keep the runtime classification based on the real app surfaces
+- prefer a generated `.shortcut` or shortcut spec/DSL as the first delivery fallback after the primary native runtime path is selected
+- only drop to manual build instructions if generation is unavailable
+
+Why:
+- this reduces user effort without changing the runtime architecture
+- it keeps Apple-native behavior while improving delivery quality

@@ -12,7 +12,7 @@ Turn a shortcut request into a decision-complete solution with four fixed output
 3. `Artifacts`
 4. `Quality Gate`
 
-Default to Apple-native macOS routes first. Treat local inspection as the primary source of truth for app capabilities on the current Mac. Treat third-party compilers and reverse-engineered signing as optional escalations, not the default answer.
+Default to Apple-native macOS runtime routes first. Treat local inspection as the primary source of truth for app capabilities on the current Mac. Treat third-party compilers and reverse-engineered signing as optional escalations for artifact generation, not the default runtime answer.
 
 ## Workflow
 
@@ -22,6 +22,7 @@ Default to Apple-native macOS routes first. Treat local inspection as the primar
    - target app
    - platform, default `macOS`
    - desired deliverable: plan, file, link, or all
+   - user language or dominant language of the current conversation, so the plan and operator-facing instructions can be written in the user's language by default
 
 2. Run a capability pass.
    - Start with local inspection, not web search.
@@ -47,13 +48,15 @@ Default to Apple-native macOS routes first. Treat local inspection as the primar
    - Read [references/bridge-patterns.md](references/bridge-patterns.md) for pattern selection.
    - Read [references/cherri-advanced-path.md](references/cherri-advanced-path.md) when a code-driven shortcut generator is relevant.
    - Use Apple-native actions, share sheet flows, file bridges, `shortcuts` CLI, and URL schemes first.
-   - Only propose Cherri or signed file generation when native routes are insufficient and the requested deliverable truly needs a file or link.
+   - If the runtime path is clear but a manual build would be expensive, fragile, or hard for the user to reproduce, prefer generated shortcut artifacts before falling back to a hand-built-only answer.
+   - Only fall back to asking the user to assemble the shortcut manually after native runtime routes and advanced generation routes have both been judged unavailable or too risky.
    - Do not default to brittle GUI automation. Use it only as a last-resort fallback and say that clearly.
 
 5. Plan artifacts.
    - Use [scripts/shortcut_artifact_planner.py](scripts/shortcut_artifact_planner.py) to convert the compatibility result into an artifact plan.
    - Default artifact policy:
      - always provide a complete implementation plan
+     - when the user wants a working shortcut and ordinary runtime architecture is known, prefer producing a generated shortcut artifact or shortcut spec before telling the user to build it manually
      - provide shortcut spec/AST/DSL when a file is requested but generation is not yet guaranteed
      - provide `.shortcut` files only when the generation path is supported
      - provide download links by default when the environment can expose a file
@@ -61,7 +64,8 @@ Default to Apple-native macOS routes first. Treat local inspection as the primar
    - Read [references/distribution-playbook.md](references/distribution-playbook.md) before promising any link.
 
 6. Produce the final report in this exact section order.
-   Use [assets/report_template.md](assets/report_template.md) as the output skeleton.
+Use [assets/report_template.md](assets/report_template.md) as the output skeleton.
+Write the implementation plan, operator guidance, and user-facing action labels in the user's language by default unless the user explicitly asks for a different language.
 
 ### Capability Report
 
@@ -129,6 +133,8 @@ Use Apple-native routes whenever the task can be solved with:
 - `shortcuts run/view/sign`
 - URL schemes
 
+This rule applies to the runtime architecture, not necessarily to the delivery method. A shortcut may still be best delivered as a generated artifact even when the runtime architecture is Apple-native.
+
 ### Local evidence first
 
 Prefer this evidence order:
@@ -144,6 +150,7 @@ Mention Cherri only when:
 - the user explicitly wants code-driven shortcut generation, or
 - a file artifact is required and a native manual build path is too costly
 - a reusable generator pipeline is more valuable than a one-off manually built shortcut
+- the ordinary route is understood, but generating the shortcut is better than asking the user to click through a long manual build
 
 Do not make Cherri the default recommendation for simple share sheet or file-bridge tasks.
 
@@ -152,6 +159,7 @@ When Cherri is chosen:
 - keep Apple-native Shortcuts behavior as the runtime target
 - be explicit that Cherri is an advanced route with extra tooling requirements
 - still include a native fallback if the Cherri pipeline is unavailable
+- prefer Cherri or another supported generator before falling back to "the user must build it manually"
 
 ### Download link vs iCloud link
 
@@ -167,6 +175,12 @@ If the app lacks native actions, share sheet integration, scriptable entrypoints
 - classify it as `Unsupported` or `UI automation only`
 - explain why
 - do not invent a file or link workflow
+
+### Language alignment
+
+- Default the plan, build steps, fallback instructions, and shortcut labels to the user's language.
+- If the conversation is multilingual, prefer the language used for the task request itself.
+- Only switch to English-first documentation when the user explicitly asks for it or the target ecosystem is clearly English-only.
 
 ## References
 
@@ -211,3 +225,6 @@ Read only what you need:
 - Separate what is verified on the current Mac from what is only generally likely.
 - Prefer one strong route over multiple weak routes.
 - Never leave the implementer to choose the architecture.
+- Prefer a generated shortcut artifact or structured shortcut spec over a long manual click-by-click build when both are feasible.
+- If manual assembly is still required, explain that it is a fallback, not the first choice.
+- Match the user's language for plan voice and operator guidance by default.

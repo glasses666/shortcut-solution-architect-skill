@@ -79,17 +79,17 @@ def defaults_for_path(build_path: str) -> Dict[str, str]:
     if build_path == "Apple-native shortcut design":
         return {
             "primary_route": "Use official Shortcuts actions, share sheet, file bridges, and app-native entrypoints.",
-            "fallback_route": "If a file artifact is required, produce a shortcut spec and optionally compile/sign later.",
+            "fallback_route": "If manual assembly is costly or a file artifact is desired, prefer a generated shortcut artifact or shortcut spec before asking the user to build it by hand.",
         }
     if build_path == "Apple-native shell/url bridge":
         return {
             "primary_route": "Use a documented CLI, URL scheme, or AppleScript/JXA bridge.",
-            "fallback_route": "Downgrade to a file bridge if the CLI or URL path proves stateful or fragile.",
+            "fallback_route": "Prefer a generated shortcut artifact or structured shortcut spec, and only then downgrade to a file bridge or manual build if the CLI or URL path proves stateful or fragile.",
         }
     if build_path == "GUI automation fallback":
         return {
             "primary_route": "Use UI automation only with explicit brittleness warnings.",
-            "fallback_route": "Return a manual workflow if permissions or layout stability are poor.",
+            "fallback_route": "If GUI automation is too brittle, prefer a generated helper artifact or structured spec, then return a manual workflow only as the last resort.",
         }
     if build_path == "Generated shortcut artifact":
         return {
@@ -99,11 +99,11 @@ def defaults_for_path(build_path: str) -> Dict[str, str]:
     if build_path == "Cherri-generated shortcut artifact":
         return {
             "primary_route": "Generate shortcut source/spec with Cherri, compile it, then sign/distribute if needed.",
-            "fallback_route": "Fall back to a native manual shortcut design or unsigned spec if the Cherri toolchain is unavailable.",
+            "fallback_route": "Fall back to a native structured shortcut spec first, and only then to a manual shortcut build if the Cherri toolchain is unavailable.",
         }
     return {
         "primary_route": "Return a transparent research or blocker report.",
-        "fallback_route": "Recommend a smaller Apple-native proof-of-concept if one exists.",
+        "fallback_route": "Recommend a smaller Apple-native proof-of-concept, then manual steps only if no safer generated artifact path exists.",
     }
 
 

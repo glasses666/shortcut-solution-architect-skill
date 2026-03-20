@@ -14,6 +14,7 @@ Choose Cherri when at least one of these is true:
 - the user wants repeatable shortcut artifacts, not just one manual build
 - the deliverable requires a `.shortcut` file and a manual step-by-step build is too expensive
 - the shortcut needs to be regenerated across machines or projects from a stable spec
+- the runtime architecture is already known, but asking the user to hand-assemble the shortcut would be too expensive
 
 ## When not to choose Cherri
 
@@ -23,6 +24,7 @@ Do not choose Cherri when:
 - a share-sheet bridge or file bridge is simpler and more portable
 - the user only needs one working shortcut and does not need a generator pipeline
 - the current environment cannot support the extra tooling
+- a generator route would add more risk than value and a short native build is already easy for the user
 
 ## How to position Cherri in the answer
 
@@ -33,6 +35,7 @@ If Cherri is recommended:
 - list the extra dependency cost
 - keep Apple-native runtime behavior as the primary target
 - include a native fallback plan
+- make it clear that generated artifacts come before "please build this by hand" in the fallback order
 
 ## Artifact policy with Cherri
 

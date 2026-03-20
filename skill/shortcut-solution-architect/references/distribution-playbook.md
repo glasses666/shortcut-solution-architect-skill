@@ -40,4 +40,5 @@ Do not promise iCloud links as a generic capability.
 
 - prefer download links or local downloadable artifacts
 - treat iCloud links as optional enhancement
-- if neither is possible, provide a precise manual export/share path
+- if direct artifact generation is not yet possible, provide a shortcut spec/DSL before falling back to a precise manual export/share path
+- manual build instructions are the last fallback, not the default answer
