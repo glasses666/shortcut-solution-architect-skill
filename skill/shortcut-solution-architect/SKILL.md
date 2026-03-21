@@ -196,6 +196,11 @@ If the app lacks native actions, share sheet integration, scriptable entrypoints
 - Generated artifacts should be easy for the user to access:
   - prefer download links when available
   - otherwise copy the final `.shortcut` and any required sidecar scripts to a shallow path such as the workspace root or another clearly named handoff folder
+- If a generated shortcut invokes shell code:
+  - assume the runtime shell environment is more restricted than Terminal
+  - do not assume Homebrew binaries are on `PATH`
+  - prefer inline shell for small logic, or explicitly managed sidecar deployment for larger logic
+  - verify at least one real runtime failure path from inside the shortcut, not only from Terminal
 
 ## References
 
@@ -208,7 +213,7 @@ Read only what you need:
 - [references/cherri-advanced-path.md](references/cherri-advanced-path.md)
   Use when evaluating code-first shortcut generation, file artifacts, or repeatable generator pipelines.
 - [references/cherri-pitfalls.md](references/cherri-pitfalls.md)
-  Use during real `.shortcut` generation to avoid common Cherri parser, typing, interpolation, and artifact-path pitfalls.
+  Use during real `.shortcut` generation to avoid common Cherri parser, typing, interpolation, artifact-path, shell-runtime, and user-facing error-message pitfalls.
 - [references/local-inspection-playbook.md](references/local-inspection-playbook.md)
   Use for local, non-destructive app inspection before falling back to research.
 - [references/system-app-textbook.md](references/system-app-textbook.md)

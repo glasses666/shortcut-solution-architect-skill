@@ -76,6 +76,38 @@ Use this file when you are actually generating `.shortcut` artifacts with Cherri
 - Change the extension, not the stem, unless the user explicitly asked for timestamps, suffixes, or collision labels.
 - If collisions are possible, append a minimal numeric suffix instead of overwriting silently.
 
+### 12. External shell scripts are a deployment surface, not just an implementation detail
+
+- A generated shortcut that calls a sidecar shell script can fail even when the script works perfectly in Terminal.
+- Do not assume a script living in `Documents` or another user folder will be readable from `Run Shell Script` in the same way it is from an interactive shell.
+- Prefer one of these in order:
+  - inline shell for small logic
+  - a controlled handoff location that Shortcuts can read reliably
+  - a clearly documented sidecar deployment step
+- If you ship a sidecar script, verify the runtime path from inside the actual shortcut, not only from Terminal.
+
+### 13. Shortcuts shell environments are narrower than Terminal environments
+
+- Do not assume Homebrew tools are on `PATH` when a shortcut runs.
+- Resolve critical binaries explicitly, for example with absolute paths or a small lookup table.
+- Validate behavior under a reduced environment, not only in your interactive shell.
+
+### 14. Shortcut input shape can differ from the Finder item the user thinks they clicked
+
+- Share sheet and Quick Action inputs may arrive as temporary files, renamed files, or file wrappers.
+- Do not rely on the visible filename alone for type detection or error messaging.
+- Prefer layered detection:
+  - media stream inspection when possible
+  - Spotlight metadata
+  - extension fallback
+- When diagnosing failures, include the received path and detected type in the error detail.
+
+### 15. AppleScript alert bodies do not interpret literal `\\n` automatically
+
+- If you concatenate shell strings with literal backslash-n sequences, the alert may show `\\n` instead of line breaks.
+- Build multiline strings with real newline characters before passing them to AppleScript.
+- Verify one real failure path so the user-facing error dialog is readable, not just technically present.
+
 ## Recommended build discipline
 
 1. Compile a minimal smoke test.
@@ -84,3 +116,4 @@ Use this file when you are actually generating `.shortcut` artifacts with Cherri
 4. Prefer stable variable shapes over clever interpolation.
 5. Keep a manual fallback plan, but only after trying the generator path seriously.
 6. Make the final handoff easy to open and easy to debug for the user, not only for the generator author.
+7. Verify the real runtime environment of shortcut-invoked shell code, not just the code path in Terminal.
