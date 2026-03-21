@@ -203,6 +203,19 @@ Use this file when you are actually generating `.shortcut` artifacts with Cherri
   - user-facing diagnostics
 - You do not need to ship the controversial or unstable decoder itself in order to make the workflow extensible.
 
+### 26. If a private-format repo ships encrypted and decrypted sample files, use them
+
+- In fragile ecosystems, real user samples may be unavailable early in development.
+- If the upstream decoder repo includes both:
+  - a small encrypted sample
+  - the expected decrypted output
+- use that pair for a byte-level sanity check before claiming the adapter works.
+- This is especially useful for Apple Shortcuts bridge layers because it separates:
+  - decoder correctness
+  - adapter contract correctness
+  - shortcut runtime correctness
+- After that, still do one real end-to-end user-file validation when you can.
+
 ## Recommended build discipline
 
 1. Compile a minimal smoke test.
