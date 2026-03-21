@@ -189,10 +189,12 @@ If the app lacks native actions, share sheet integration, scriptable entrypoints
 
 - When a shortcut exposes many target formats or many actions, prefer a hierarchical menu such as `type -> format` over one long flat list.
 - When a shortcut can fail in ways the user must understand, prefer a modal alert with actionable detail instead of a notification that can collapse away.
+- For long-running or file-centric shortcuts, failure should be explicit and success should still be visible; do not make users infer success only from a side effect such as Finder opening.
 - Preserve user expectations about outputs when possible:
   - keep the original base filename
   - avoid silent overwrite unless the user explicitly wants it
   - reveal the output in Finder when the task is file-centric
+  - choose default transcode presets that match likely user intent instead of technically correct but unexpectedly huge outputs
 - Generated artifacts should be easy for the user to access:
   - prefer download links when available
   - otherwise copy the final `.shortcut` and any required sidecar scripts to a shallow path such as the workspace root or another clearly named handoff folder
@@ -201,6 +203,8 @@ If the app lacks native actions, share sheet integration, scriptable entrypoints
   - do not assume Homebrew binaries are on `PATH`
   - prefer inline shell for small logic, or explicitly managed sidecar deployment for larger logic
   - verify at least one real runtime failure path from inside the shortcut, not only from Terminal
+  - when the shortcut handles media, verify at least one real image, one real audio, and one real video input
+  - do not assume stream inspection alone is enough for type detection; still images can be misclassified as video by media tooling
 
 ## References
 

@@ -102,11 +102,35 @@ Use this file when you are actually generating `.shortcut` artifacts with Cherri
   - extension fallback
 - When diagnosing failures, include the received path and detected type in the error detail.
 
-### 15. AppleScript alert bodies do not interpret literal `\\n` automatically
+### 15. Detection order matters for media conversion shortcuts
+
+- `ffprobe` can report a still image as a `video` stream.
+- For image conversion shortcuts, do not let stream inspection override a clear `public.image` classification from Spotlight metadata.
+- A safer order is:
+  - `mdls` image classification first
+  - then stream inspection for audio/video separation
+  - then extension fallback
+- Verify at least one real image input and one real video input before shipping.
+
+### 16. AppleScript alert bodies do not interpret literal `\\n` automatically
 
 - If you concatenate shell strings with literal backslash-n sequences, the alert may show `\\n` instead of line breaks.
 - Build multiline strings with real newline characters before passing them to AppleScript.
 - Verify one real failure path so the user-facing error dialog is readable, not just technically present.
+
+### 17. Success feedback matters too
+
+- A shortcut that silently opens Finder can still feel unfinished or ambiguous to the user.
+- For longer conversions, add a clear success notification or another lightweight completion signal.
+- Prefer:
+  - blocking alerts for failure
+  - lightweight notifications for success
+
+### 18. Default transcoding presets should match the user's likely intent
+
+- A technically valid transcode can still feel broken if the output is dramatically larger than the input.
+- Do not use heavy mezzanine codecs such as ProRes as the default for everyday "convert to MOV" unless the user explicitly asked for edit-grade output.
+- For casual or mixed-use conversion shortcuts, default to balanced presets first and expose heavier delivery presets as explicit options.
 
 ## Recommended build discipline
 
@@ -117,3 +141,4 @@ Use this file when you are actually generating `.shortcut` artifacts with Cherri
 5. Keep a manual fallback plan, but only after trying the generator path seriously.
 6. Make the final handoff easy to open and easy to debug for the user, not only for the generator author.
 7. Verify the real runtime environment of shortcut-invoked shell code, not just the code path in Terminal.
+8. Test one real image case, one real audio case, and one real video case before calling a media shortcut ready.
