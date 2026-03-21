@@ -177,6 +177,32 @@ Use this file when you are actually generating `.shortcut` artifacts with Cherri
   - more controlled PDF page rendering
 - Prefer this layer before reaching for heavyweight third-party dependencies if the product goal is "原生稳妥版".
 
+### 23. Private-format support should default to bridge architecture, not built-in conversion
+
+- The existence of GitHub projects for a private format does not automatically make that format a good candidate for built-in product support.
+- For Apple Shortcuts workflows, the safer default is:
+  - detect the format
+  - route to an external user-supplied adapter
+  - show clear errors when no adapter is configured
+- This keeps the main shortcut stable while allowing advanced users to bring their own tooling.
+
+### 24. Repository availability itself is a signal
+
+- A format ecosystem can look active in community memory while specific repositories or organizations become unavailable, geo-restricted, or legally constrained.
+- If a previously well-known repo returns responses like HTTP `451`, treat that as a product signal:
+  - do not make that tool a hard dependency of the default workflow
+  - do not promise it as a stable built-in backend
+  - prefer a pluggable adapter slot instead
+
+### 25. For risky or unstable ecosystems, ship the contract, not the implementation
+
+- A robust Shortcut product can still support an ecosystem by shipping:
+  - adapter naming conventions
+  - executable contracts
+  - output directory rules
+  - user-facing diagnostics
+- You do not need to ship the controversial or unstable decoder itself in order to make the workflow extensible.
+
 ## Recommended build discipline
 
 1. Compile a minimal smoke test.
