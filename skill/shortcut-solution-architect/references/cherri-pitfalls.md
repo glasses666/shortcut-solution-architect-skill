@@ -132,6 +132,51 @@ Use this file when you are actually generating `.shortcut` artifacts with Cherri
 - Do not use heavy mezzanine codecs such as ProRes as the default for everyday "convert to MOV" unless the user explicitly asked for edit-grade output.
 - For casual or mixed-use conversion shortcuts, default to balanced presets first and expose heavier delivery presets as explicit options.
 
+### 19. Native macOS document conversion has a real capability ceiling
+
+- `textutil` is a strong first-line tool for lightweight document conversion such as:
+  - `txt`
+  - `rtf`
+  - `html`
+  - `doc`
+  - `docx`
+  - `odt`
+  - `webarchive`
+- It is good for Phase 1 conversion workflows, but it is not a fidelity-preserving Office engine.
+- Treat it as a pragmatic bridge, not a guarantee of layout-perfect round trips.
+
+### 20. `sips` is not a multi-image PDF merger
+
+- `sips` can reliably handle single-image conversion and can produce a single-page PDF from one image.
+- It should not be treated as a native replacement for "merge many images into one PDF".
+- If the product requirement is truly "multiple images -> one PDF", plan for another native layer such as:
+  - Swift + PDFKit/AppKit
+  - an Automator action bridge if you have validated it locally
+- Do not promise multi-image PDF merging with `sips` alone.
+
+### 21. `qlmanage` exports previews, not full PDF raster pipelines
+
+- `qlmanage -t` is useful for Quick Look-style preview extraction from PDFs.
+- This is appropriate for user-facing labels such as:
+  - `PDF 预览导出 PNG`
+  - `PDF 预览导出 JPG`
+- It should not be described as:
+  - full-page split export
+  - archival-grade rasterization
+  - high-fidelity page rendering
+- Make the preview semantics explicit in menu labels and error copy.
+
+### 22. When native tools are insufficient, native scripting can still keep the workflow "Apple-first"
+
+- A Shortcut solution can remain Apple-native even when shell glue needs:
+  - `swift`
+  - `PDFKit`
+  - `AppKit`
+- This is especially useful when native command-line tools do not cover a required transformation such as:
+  - multi-image PDF assembly
+  - more controlled PDF page rendering
+- Prefer this layer before reaching for heavyweight third-party dependencies if the product goal is "原生稳妥版".
+
 ## Recommended build discipline
 
 1. Compile a minimal smoke test.
