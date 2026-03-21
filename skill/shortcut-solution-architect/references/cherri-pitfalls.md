@@ -216,6 +216,16 @@ Use this file when you are actually generating `.shortcut` artifacts with Cherri
   - shortcut runtime correctness
 - After that, still do one real end-to-end user-file validation when you can.
 
+### 27. Verification status must be tracked per extension, not just per upstream decoder
+
+- An upstream tool may claim support for multiple private extensions such as `kgm` and `vpr`.
+- Do not collapse them into one verification state automatically.
+- It is fine to reuse one backend across multiple extensions, but report them separately:
+  - `backend connected`
+  - `sample-verified`
+  - `real-user-file verified`
+- This prevents a shortcut from sounding more battle-tested than it really is.
+
 ## Recommended build discipline
 
 1. Compile a minimal smoke test.
