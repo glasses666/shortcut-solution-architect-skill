@@ -226,6 +226,45 @@ Use this file when you are actually generating `.shortcut` artifacts with Cherri
   - `real-user-file verified`
 - This prevents a shortcut from sounding more battle-tested than it really is.
 
+### 28. Local tool absence should shrink scope, not trigger imaginary support
+
+- If a class of conversions normally depends on a heavyweight tool such as:
+  - `Calibre`
+  - `LibreOffice`
+  - `Blender`
+- and that tool is not installed on the current Mac, do not quietly describe the feature as generally available.
+- Instead:
+  - narrow the first version to what the current Mac can really do
+  - ship a smaller but honest feature set
+  - keep the rest as plugin slots or future phases
+
+### 29. EPUB can still have a useful Phase 1 without Calibre
+
+- Even when `ebook-convert` is unavailable, a Shortcut can still provide a solid EPUB-first workflow using:
+  - Python standard library `zipfile`
+  - lightweight OPF/container parsing
+  - HTML/TXT extraction
+  - simple TXT/HTML to EPUB packaging
+- This is a good "Apple-adjacent, low-dependency" first phase for ebook support.
+- Be explicit that this is not a full ebook-conversion suite:
+  - no DRM
+  - no Kindle pipeline
+  - no fidelity promises across arbitrary ebook formats
+
+### 30. Apple USD tools make a strong first 3D integration layer on macOS
+
+- If `usdcat` and `usdzip` are present, they are often the cleanest low-dependency starting point for 3D support.
+- A pragmatic Phase 1 is:
+  - `USD/USDA/USDC -> USDA`
+  - `USD/USDA/USDC -> USDC`
+  - `USD/USDA/USDC -> USDZ`
+  - `USDZ -> unpacked directory`
+- Do not blur this into "general 3D conversion" unless you also have validated support for formats such as:
+  - `obj`
+  - `fbx`
+  - `gltf/glb`
+- Treat non-USD ecosystems as separate plugin or later-phase work unless the required tools are actually installed and tested.
+
 ## Recommended build discipline
 
 1. Compile a minimal smoke test.
