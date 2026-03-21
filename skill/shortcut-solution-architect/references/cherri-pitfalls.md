@@ -50,6 +50,32 @@ Use this file when you are actually generating `.shortcut` artifacts with Cherri
 - If dynamic notifications or branch-specific counts trigger compiler instability, prefer a simpler, stable notification over a clever but fragile one.
 - The first goal is a working importable `.shortcut`, not maximal elegance in the source.
 
+### 8. Artifact handoff matters as much as compilation
+
+- A technically correct `.shortcut` hidden in a deep build directory still feels broken to the user.
+- After generation, copy the final `.shortcut` and any required helper files to an easy-open location or provide a real download link.
+- Report the final user-facing handoff path, not only the compiler working directory.
+
+### 9. Failure UX should favor alerts over notifications
+
+- Notifications are easy to miss or can collapse in Notification Center.
+- For conversion, import, or bridge tasks where the user needs the exact reason something failed, prefer a blocking `display alert` style message with a short summary and the first useful error details.
+- Keep notifications for success or background progress hints, not for critical failure diagnosis.
+
+### 10. Hierarchical menus reduce wrong-format mistakes
+
+- When a shortcut offers many output formats, do not flatten everything into a single long menu.
+- Prefer a two-step structure such as:
+  - conversion type
+  - target format
+- This reduces misclicks and makes the workflow easier to scan, especially in share sheet or Quick Action contexts.
+
+### 11. Preserve output naming expectations
+
+- For file conversion shortcuts, users usually expect the original base filename to survive.
+- Change the extension, not the stem, unless the user explicitly asked for timestamps, suffixes, or collision labels.
+- If collisions are possible, append a minimal numeric suffix instead of overwriting silently.
+
 ## Recommended build discipline
 
 1. Compile a minimal smoke test.
@@ -57,3 +83,4 @@ Use this file when you are actually generating `.shortcut` artifacts with Cherri
 3. After each compile, inspect the actual generated file name.
 4. Prefer stable variable shapes over clever interpolation.
 5. Keep a manual fallback plan, but only after trying the generator path seriously.
+6. Make the final handoff easy to open and easy to debug for the user, not only for the generator author.

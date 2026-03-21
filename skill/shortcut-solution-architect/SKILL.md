@@ -60,6 +60,7 @@ Default to Apple-native macOS runtime routes first. Treat local inspection as th
      - provide shortcut spec/AST/DSL when a file is requested but generation is not yet guaranteed
      - provide `.shortcut` files only when the generation path is supported
      - provide download links by default when the environment can expose a file
+     - when a download link is not available, place generated local files in a shallow, easy-to-open location instead of a deeply nested build directory
      - provide iCloud share links only when a real Apple-account-backed publish step is available
    - Read [references/distribution-playbook.md](references/distribution-playbook.md) before promising any link.
 
@@ -109,6 +110,7 @@ If a `.shortcut` file is part of the answer:
 - prefer old-format plus Apple signing on macOS
 - use [scripts/sign_shortcut_wrapper.py](scripts/sign_shortcut_wrapper.py) only when the input file already exists
 - do not imply that signing alone creates the shortcut structure
+- when possible, give the user an easy-open path or downloadable link instead of only reporting a deep filesystem path
 
 ### Quality Gate
 
@@ -121,6 +123,7 @@ Always include:
 - `Run 3 fallback`
 
 The answer must be good enough that a user can get to a working result in three attempts or fewer without making architecture decisions themselves.
+When a generated shortcut includes user-visible error handling, prefer modal alerts with detailed reasons over notification-only failure reporting.
 
 ## Decision Rules
 
@@ -181,6 +184,18 @@ If the app lacks native actions, share sheet integration, scriptable entrypoints
 - Default the plan, build steps, fallback instructions, and shortcut labels to the user's language.
 - If the conversation is multilingual, prefer the language used for the task request itself.
 - Only switch to English-first documentation when the user explicitly asks for it or the target ecosystem is clearly English-only.
+
+### UX defaults for generated shortcuts
+
+- When a shortcut exposes many target formats or many actions, prefer a hierarchical menu such as `type -> format` over one long flat list.
+- When a shortcut can fail in ways the user must understand, prefer a modal alert with actionable detail instead of a notification that can collapse away.
+- Preserve user expectations about outputs when possible:
+  - keep the original base filename
+  - avoid silent overwrite unless the user explicitly wants it
+  - reveal the output in Finder when the task is file-centric
+- Generated artifacts should be easy for the user to access:
+  - prefer download links when available
+  - otherwise copy the final `.shortcut` and any required sidecar scripts to a shallow path such as the workspace root or another clearly named handoff folder
 
 ## References
 
